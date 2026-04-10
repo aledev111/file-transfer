@@ -27,7 +27,8 @@ app.post('/upload', upload.single('file'), (req, res) => {
     if (!req.file) {
         return res.status(400).send('Nessun file caricato');
     }
-    const downloadLink = `http://localhost:3000/download/${req.file.filename}`;
+    // CAMBIATO: usa il dominio di Render invece di localhost
+    const downloadLink = `https://file-transfer-mfov.onrender.com/download/${req.file.filename}`;
     res.json({ message: 'File caricato!', link: downloadLink });
 });
 
@@ -36,6 +37,8 @@ app.get('/download/:filename', (req, res) => {
     res.download(filepath);
 });
 
-app.listen(3000, () => {
-    console.log('✅ Server avviato su http://localhost:3000');
+// CAMBIATO: usa la porta che Render assegna
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`✅ Server avviato su porta ${port}`);
 });
